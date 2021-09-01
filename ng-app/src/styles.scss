@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+$hdr-h: 100px;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  //   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.top-bg {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 200px;
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  position: relative;
+  z-index: 2;
+  padding: 0 10rem;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+.accent {
+  background-color: #efefef;
+}
+.content-card {
+  background: #fff;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  overflow: hidden;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
+    0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+
+.header {
+  height: $hdr-h;
+  min-height: $hdr-h;
+  max-height: $hdr-h;
+}
+
+.search-wrapper {
+  background-color: white;
+  width: 80%;
+  //   max-width: 480px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
+    0 1px 3px 0 rgb(0 0 0 / 12%);
+  .search {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 18px;
+    input {
+      width: 100%;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+      padding: 0 16px;
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.w-100-p {
+  width: 100%;
+}
+.p-24 {
+  padding: 24px;
+}

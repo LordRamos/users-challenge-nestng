@@ -1,0 +1,96 @@
+<div class="">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button color="primary" [routerLink]="'/user'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="isEditMode">
+                        Edit User {{user?.names}}
+                    </div>
+                    <div class="h2" *ngIf="!isEditMode">
+                        New User
+                    </div>
+                 
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            <button mat-raised-button color="primary"  [disabled]="!userForm || userForm?.invalid"
+                (click)="saveUser()">
+                <span>Save</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="userForm" [formGroup]="userForm"
+                    class="w-100-p" fxLayout="column" fxFlex>
+                    <div class="tab-content p-24" >
+                        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+                            <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>C.I </mat-label>
+                                <input matInput type="number" placeholder="C.I" name="ci"
+                                    formControlName="ci" required>
+                            </mat-form-field>
+                            <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Email</mat-label>
+                                <input matInput placeholder="Email" name="email" formControlName="email" required>
+                                <!-- <mat-hint *ngIf="email.invalid  && (email.dirty || email.touched) ">
+                                    <span *ngIf="email.errors.required" style="color: red;"> Email is required. </span>
+                                </mat-hint> -->
+                            </mat-form-field>
+                            <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Names" name="names" formControlName="names"
+                                    required>
+                                <!-- <mat-hint *ngIf="first_name.invalid  && (first_name.dirty || first_name.touched) ">
+                                    <span *ngIf="first_name.errors.required" style="color: red;"> First Name is
+                                        required.
+                                    </span>
+                                </mat-hint> -->
+                            </mat-form-field>
+                            <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="surnames" name="surnames" formControlName="surnames"
+                                    required>
+                                <!-- <mat-hint *ngIf="last_name.invalid  && (last_name.dirty || last_name.touched) ">
+                                    <span *ngIf="last_name.errors.required" style="color: red;"> Last Name is required.
+                                    </span>
+                                </mat-hint> -->
+                            </mat-form-field>
+                            <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Phone Number</mat-label>
+                                <input type="number" matInput placeholder="Phone Number" name="phoneNumber" formControlName="phoneNumber"
+                                    required>
+                                <!-- <mat-hint *ngIf="last_name.invalid  && (last_name.dirty || last_name.touched) ">
+                                    <span *ngIf="last_name.errors.required" style="color: red;"> Last Name is required.
+                                    </span>
+                                </mat-hint> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

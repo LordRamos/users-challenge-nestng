@@ -3,10 +3,10 @@ import { IsUnique } from '../validators/user-custom-validator';
 // Validator DTO
 export class CreateUserDto {
   @IsString()
-  firstNames: string;
+  names: string;
 
   @IsString()
-  lastNames: string;
+  surnames: string;
 
   @IsUnique()
   @IsInt()
