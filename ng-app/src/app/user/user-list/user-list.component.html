@@ -8,32 +8,11 @@
     <div class="center">
 
         <!-- HEADER -->
-        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
-            fxLayoutAlign.gt-sm="space-between center">
-
-            <!-- APP TITLE -->
-            <!-- <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    list
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Users
-                </span>
-            </div> -->
-            <!-- / APP TITLE -->
-
-            <!-- SEARCH -->
-            <div class="search-wrapper mx-32 mx-md-0">
-                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>search</mat-icon>
-                    <input #filter placeholder="Search User">
-                </div>
-            </div>
-            <!-- / SEARCH -->
-
+        <div class="header accent" fxLayout="column" fxLayoutAlign="end center" fxLayout.gt-sm="row"
+            >
             <!-- ADD BUTTON -->
             <button mat-raised-button color="primary" [routerLink]="'/user/create'" >
-                <span>NEW USER</span>
+                <span>Nuevo Usuario</span>
             </button>
             <!-- / ADD BUTTON -->
 
@@ -42,15 +21,7 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card">
-            <mat-table class="products-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"
-               >
-                <!-- ID Column -->
-                <!-- <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                    <mat-cell *matCellDef="let user">
-                        <p class="text-truncate">{{user.id}}</p>
-                    </mat-cell>
-                </ng-container> -->
+            <mat-table class="products-table" #table [dataSource]="dataSource" matSort>        
                 <!-- C.I Column -->
                 <ng-container matColumnDef="ci">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>C.I</mat-header-cell>
@@ -61,28 +32,28 @@
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Correo</mat-header-cell>
                     <mat-cell *matCellDef="let user">
                         <p class="text-truncate">{{user.email}}</p>
                     </mat-cell>
                 </ng-container>
                 <!-- Names Column -->
                 <ng-container matColumnDef="names">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Names</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombres</mat-header-cell>
                     <mat-cell *matCellDef="let user">
                         <p class="text-truncate">{{user.names}}</p>
                     </mat-cell>
                 </ng-container>
                 <!-- Surname Column -->
                 <ng-container matColumnDef="surnames">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Surnames</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</mat-header-cell>
                     <mat-cell *matCellDef="let user">
                         <p class="text-truncate">{{user.surnames}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="phoneNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</mat-header-cell>
                     <mat-cell *matCellDef="let user">
                         <p class="text-truncate">{{user.phoneNumber}}</p>
                     </mat-cell>
@@ -93,10 +64,10 @@
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs></mat-header-cell>
                     <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
-                        <button mat-icon-button aria-label="edit" routerLink="/user/{{user._id}}/edit" >
+                        <button mat-icon-button aria-label="edit"    matTooltip="Editar" routerLink="/user/{{user._id}}/edit" >
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button aria-label="remove" (click)="delete(user._id)" >
+                        <button mat-icon-button aria-label="remove"   matTooltip="Eliminar" (click)="delete(user._id)" >
                             <mat-icon>delete</mat-icon>
                         </button>
 

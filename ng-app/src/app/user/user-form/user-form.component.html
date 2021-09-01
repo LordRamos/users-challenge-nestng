@@ -8,16 +8,16 @@
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
-                <button mat-icon-button color="primary" [routerLink]="'/user'">
+                <button mat-icon-button color="primary" matTooltip="Atras" [routerLink]="'/user'">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
                 <div fxLayout="column" fxLayoutAlign="start start"
-                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    >
                     <div class="h2" *ngIf="isEditMode">
-                        Edit User {{user?.names}}
+                        Editar usuario C.I {{user?.ci}}
                     </div>
                     <div class="h2" *ngIf="!isEditMode">
-                        New User
+                        Nuevo usuario
                     </div>
                  
                 </div>
@@ -25,60 +25,47 @@
             <!-- / APP TITLE -->
             <button mat-raised-button color="primary"  [disabled]="!userForm || userForm?.invalid"
                 (click)="saveUser()">
-                <span>Save</span>
+                <span>Guardar</span>
             </button>
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <!-- CONTENT -->
             <div class="content">
-
-                <form name="userForm" [formGroup]="userForm"
+                <form *ngIf="!isEditMode || isEditMode && user" name="userForm" [formGroup]="userForm"
                     class="w-100-p" fxLayout="column" fxFlex>
                     <div class="tab-content p-24" >
                         <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
                             <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
                                 <mat-label>C.I </mat-label>
                                 <input matInput type="number" placeholder="C.I" name="ci"
-                                    formControlName="ci" required>
+                                    formControlName="ci" (change)="checkField('ci',$event)" required>
+                                    <mat-error *ngIf="userForm.get('ci')?.invalid">{{getErrorMessage("ci")}}</mat-error>
                             </mat-form-field>
                             <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
-                                <mat-label>Email</mat-label>
-                                <input matInput placeholder="Email" name="email" formControlName="email" required>
-                                <!-- <mat-hint *ngIf="email.invalid  && (email.dirty || email.touched) ">
-                                    <span *ngIf="email.errors.required" style="color: red;"> Email is required. </span>
-                                </mat-hint> -->
+                                <mat-label>Correo</mat-label>
+                                <input matInput placeholder="Correo" type="email" name="email" formControlName="email" (change)="checkField('email',$event)" required>
+                                <mat-error *ngIf="userForm.get('email')?.invalid">{{getErrorMessage("email")}}</mat-error>
+                              
                             </mat-form-field>
                             <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Names" name="names" formControlName="names"
+                                <mat-label>Nombres</mat-label>
+                                <input matInput placeholder="Nombres" name="names" formControlName="names"
                                     required>
-                                <!-- <mat-hint *ngIf="first_name.invalid  && (first_name.dirty || first_name.touched) ">
-                                    <span *ngIf="first_name.errors.required" style="color: red;"> First Name is
-                                        required.
-                                    </span>
-                                </mat-hint> -->
+                                    <mat-error *ngIf="userForm.get('names')?.invalid">{{getErrorMessage("names")}}</mat-error>
                             </mat-form-field>
                             <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="surnames" name="surnames" formControlName="surnames"
+                                <mat-label>Apellidos</mat-label>
+                                <input matInput placeholder="Apellidos" name="surnames" formControlName="surnames"
                                     required>
-                                <!-- <mat-hint *ngIf="last_name.invalid  && (last_name.dirty || last_name.touched) ">
-                                    <span *ngIf="last_name.errors.required" style="color: red;"> Last Name is required.
-                                    </span>
-                                </mat-hint> -->
+                                    <mat-error *ngIf="userForm.get('surnames')?.invalid">{{getErrorMessage("surnames")}}</mat-error>
                             </mat-form-field>
                             <mat-form-field fxFlex appearance="outline" floatLabel="always" class="w-100-p">
-                                <mat-label>Phone Number</mat-label>
-                                <input type="number" matInput placeholder="Phone Number" name="phoneNumber" formControlName="phoneNumber"
+                                <mat-label>Teléfono</mat-label>
+                                <input type="number" matInput placeholder="Teléfono" name="phoneNumber" formControlName="phoneNumber"
                                     required>
-                                <!-- <mat-hint *ngIf="last_name.invalid  && (last_name.dirty || last_name.touched) ">
-                                    <span *ngIf="last_name.errors.required" style="color: red;"> Last Name is required.
-                                    </span>
-                                </mat-hint> -->
+                                    <mat-error *ngIf="userForm.get('phoneNumber')?.invalid">{{getErrorMessage("phoneNumber")}}</mat-error>
                             </mat-form-field>
                         </div>
                     </div>

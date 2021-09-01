@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Put,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -14,7 +16,21 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  @Get(':id/check-mci')
+  async checkMailCIUpdate(@Param('id') id: string, @Query() query) {
+    const fieldName = query['field'];
+    const value = query['value'];
+    const exists = await this.usersService.existsByField(value, fieldName, id);
+    return { valid: !exists };
+  }
 
+  @Get('/check-mci')
+  async checkMailCICreate(@Query() query) {
+    const fieldName = query['field'];
+    const value = query['value'];
+    const exists = await this.usersService.existsByField(value, fieldName);
+    return { valid: !exists };
+  }
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);

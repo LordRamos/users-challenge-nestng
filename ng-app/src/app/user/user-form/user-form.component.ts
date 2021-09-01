@@ -16,6 +16,12 @@ export class UserFormComponent implements OnInit {
   user!: User;
   userForm!: FormGroup;
   isEditMode!: boolean;
+  formErrors = new Map([
+    ['required', 'Este campo es requerido'],
+    ['email', 'No es un email válido'],
+    ['email_exists', 'Este email ya esta registrado'],
+    ['ci_exists', 'Esta cedula ya esta registrada'],
+  ]);
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -38,18 +44,15 @@ export class UserFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!id;
     let user$ = this.isEditMode ? this.userService.get(id) : of({ _id: '' });
-    user$.subscribe((user) => {
-      if (user._id) this.user = user;
-      this.userForm = this.createUserForm();
-    });
-    // if (this.isEditMode) {
-    //   this.userService.get(id).subscribe((user) => {
-    //     this.user = user;
-    //     this.userForm = this.createUserForm();
-    //   });
-    // } else {
-    //   this.userForm = this.createUserForm();
-    // }
+    user$.subscribe(
+      (user) => {
+        if (user._id) this.user = user;
+        this.userForm = this.createUserForm();
+      },
+      (err) => {
+        this.notificationService.showMessage('Error al realizar la operacion');
+      }
+    );
   }
 
   /**
@@ -73,29 +76,12 @@ export class UserFormComponent implements OnInit {
   createUserForm(): FormGroup {
     return this.formBuilder.group({
       ci: [this.user?.ci, Validators.required],
-      email: [this.user?.email, Validators.required],
+      email: [this.user?.email, [Validators.required, Validators.email]],
       names: [this.user?.names, Validators.required],
       surnames: [this.user?.surnames, Validators.required],
       phoneNumber: [this.user?.phoneNumber, Validators.required],
     });
   }
-
-  // messages
-  //   get first_name() {
-  //     return this.userForm.get('first_name');
-  //   }
-  //   get email() {
-  //     return this.userForm.get('email');
-  //   }
-  //   get last_name() {
-  //     return this.userForm.get('last_name');
-  //   }
-  //   get password() {
-  //     return this.userForm.get('password');
-  //   }
-  //   get password_confirm() {
-  //     return this.userForm.get('password_confirm');
-  //   }
 
   saveUser() {
     const data = this.userForm.getRawValue();
@@ -103,11 +89,56 @@ export class UserFormComponent implements OnInit {
     let response$ = this.isEditMode
       ? this.userService.update({ ...data, _id: this.user._id })
       : this.userService.add(data);
-    response$.subscribe((r) => {
-      this.notificationService.showMessage(
-        this.isEditMode ? 'User updated' : 'User saved'
-      );
-      this.router.navigate(['/user']);
-    });
+    response$.subscribe(
+      (r) => {
+        this.notificationService.showMessage(
+          this.isEditMode
+            ? 'Usuario actualizado correctamente...'
+            : 'Usuario guardado correctamente...'
+        );
+        this.router.navigate(['/user']);
+      },
+      (err) => {
+        this.notificationService.showMessage(
+          'Error al cargar datos de usuario'
+        );
+      }
+    );
+  }
+  checkField(fieldName: string, event: any) {
+    this.userService
+      .checkField(fieldName, event.target.value, this.user?._id)
+      .subscribe((ch) => {
+        setTimeout(() => {
+          this.userForm.get(fieldName)?.markAsDirty();
+          this.userForm.get(fieldName)?.markAsTouched();
+          const prevErrors = this.userForm.get(fieldName)?.errors;
+          let errors;
+          if (prevErrors) {
+            let { exists, ...extErrors } = prevErrors;
+            errors = ch.valid ? extErrors : { exists: true, ...extErrors };
+          } else {
+            errors = ch.valid ? null : { exists: true };
+          }
+          this.userForm.get(fieldName)?.setErrors(errors);
+          console.log(this.userForm.get(fieldName)?.errors);
+          // ...
+        }, 1);
+
+        console.log(ch.valid);
+      });
+  }
+  getErrorMessage(fieldName: string) {
+    const errors = this.userForm.get(fieldName)?.errors;
+    let message = '';
+    if (errors) {
+      message = Object.keys(errors)
+        .map((k) =>
+          this.formErrors.get(k === 'exists' ? fieldName + '_' + k : k)
+        )
+        .toString();
+    }
+
+    return message;
   }
 }

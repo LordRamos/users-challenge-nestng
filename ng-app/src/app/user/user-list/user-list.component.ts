@@ -34,7 +34,6 @@ export class UserListComponent implements OnInit {
     'email',
     'names',
     'surnames',
-    'email',
     'phoneNumber',
     'actions',
   ];
@@ -60,38 +59,31 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.initFilter()
     this.loadUsers();
   }
 
-  // initFilter() {
-  //     fromEvent(this.filter.nativeElement, 'keyup')
-  //         .pipe(
-  //             takeUntil(this._unsubscribeAll),
-  //             debounceTime(150),
-  //             distinctUntilChanged()
-  //         )
-  //         .subscribe(() => {
-  //             if (!this.dataSource) {
-  //                 return;
-  //             }
-  //             this.dataSource.filter = this.filter.nativeElement.value;
-  //         });
-  // }
-
   loadUsers() {
-    this.userService.getAll().subscribe((users) => {
-      this.dataSource = new UserDataSource(users, this.paginator, this.sort);
-    });
+    this.userService.getAll().subscribe(
+      (users) => {
+        this.dataSource = new UserDataSource(users, this.paginator, this.sort);
+      },
+      (err) => {
+        this.notificationService.showMessage(
+          'Error al cargar lista de usuarios'
+        );
+      }
+    );
   }
   /****** DELETE ITEM ******/
   delete(id: string): void {
     this.notificationService
-      .showConfirmDialog('Are you sure you want to delete?')
+      .showConfirmDialog('¿Esta seguro que desea eliminar este usuario?')
       .subscribe((result) => {
         if (result) {
           this.userService.delete(id).subscribe((e) => {
-            this.notificationService.showMessage('User removed successfully');
+            this.notificationService.showMessage(
+              'Usuario eliminado correctamente...'
+            );
             this.loadUsers();
           });
         }
@@ -196,11 +188,20 @@ export class UserDataSource extends DataSource<User[]> {
       let propertyB: number | string = '';
 
       switch (this._matSort.active) {
-        case 'id':
-          [propertyA, propertyB] = [a.id, b.id];
+        case 'ci':
+          [propertyA, propertyB] = [a.ci, b.ci];
           break;
-        case 'name':
-          [propertyA, propertyB] = [a.name, b.name];
+        case 'names':
+          [propertyA, propertyB] = [a.names, b.names];
+          break;
+        case 'surnames':
+          [propertyA, propertyB] = [a.surnames, b.surnames];
+          break;
+        case 'email':
+          [propertyA, propertyB] = [a.email, b.email];
+          break;
+        case 'phoneNumber':
+          [propertyA, propertyB] = [a.phoneNumber, b.phoneNumber];
           break;
       }
 
